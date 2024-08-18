@@ -1,8 +1,12 @@
-// quiz.js
-
 document.addEventListener('DOMContentLoaded', function() {
-    const playerName = localStorage.getItem('playerName');
-    console.log(`Player name ${playerName} registered`);
+    const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+
+    // Only show Start Quiz and Next Question buttons to the admin
+    if (isAdmin) {
+        document.querySelector('.next-question').style.display = 'block';
+    } else {
+        document.querySelector('.next-question').style.display = 'none';
+    }
 
     const quizQuestions = [
         {
@@ -38,7 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', () => selectAnswer(index));
             optionsElement.appendChild(button);
         });
-        document.querySelector('.next-question').style.display = 'none';
+
+        if (isAdmin) {
+            document.querySelector('.next-question').style.display = 'block';
+        }
         console.log(`Displaying question: ${quizQuestions[currentQuestion].question}`);
     }
 
@@ -51,8 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Answer is incorrect');
         }
 
-        // Show the "Next Question" button for the master user to proceed
-        document.querySelector('.next-question').style.display = 'block';
+        if (isAdmin) {
+            document.querySelector('.next-question').style.display = 'block';
+        }
     }
 
     document.querySelector('.next-question').addEventListener('click', () => {
@@ -72,13 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showLeaderboard() {
         const leaderboardList = document.querySelector('.leaderboard-list');
+        const playerName = sessionStorage.getItem('playerName');
 
-        // Fetch existing scores from local storage or initialize an empty array if none exist
-        const scores = JSON.parse(localStorage.getItem('scores')) || [];
+        // Fetch existing scores from session storage or initialize an empty array if none exist
+        const scores = JSON.parse(sessionStorage.getItem('scores')) || [];
         // Add the current player's score to the scores array
         scores.push({ name: playerName, score: score });
-        // Save the updated scores array back to local storage
-        localStorage.setItem('scores', JSON.stringify(scores));
+        // Save the updated scores array back to session storage
+        sessionStorage.setItem('scores', JSON.stringify(scores));
         console.log('Scores updated', scores);
 
         // Sort the scores array in descending order based on the score

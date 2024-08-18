@@ -7,27 +7,13 @@
     <link rel="stylesheet" href="./css/gallery.css">
     <link rel="stylesheet" href="./css/styles.css">
     
-    <script src="
-https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js
-"></script>
-<link href="
-https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css
-" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- <div class="image-section">
-        
-        <img src="./pics/olympics4.jpg" alt="Image 4">
-        <img src="./pics/olympic5.jpg" alt="Image 5">
-        <img src="./pics/olympic6.jpg" alt="Image 6">
-        <img src="./pics/olympic-lady-gaga.jpg" alt="Image 7">
-        <img src="./pics/olympic-celion-dion.jpg" alt="Image 8">
-    </div> -->
-    
     <div class="container">
         <header>
             <h1>How much can you remember <br> about the Olympic Games?</h1>
-            
         </header>
         <main>
             <div class="home">
@@ -37,22 +23,95 @@ https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css
                     <button type="submit">Join Game</button>
                 </form>
             </div>
-            
 
-            <!-- Add gallery items to this list -->
+            <!-- Gallery Section -->
             <ul class="gallery"></ul>
+
+            <!-- Player List -->
+            <div class="player-list">
+                <h3>Players Joined:</h3>
+                <ul id="playerList"></ul>
+            </div>
+
+            <!-- Start Quiz Button for Admin -->
+            <div class="start-quiz">
+                <button id="startQuizButton" style="display: none;">Start Quiz</button>
+            </div>
+            
+            <!-- Waiting Message for Non-Admin Users -->
+            <div class="waiting-message" style="display: none;">
+                <p>Waiting for the admin to start the quiz...</p>
+            </div>
         
             <script src="./js/gallery.js" type="module"></script>
         </main>
     </div>
     
     <script>
+        function updatePlayerList() {
+            const playerListElement = document.getElementById('playerList');
+            const players = JSON.parse(sessionStorage.getItem('players')) || [];
+            playerListElement.innerHTML = ''; // Clear current list
+
+            players.forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = player;
+                playerListElement.appendChild(li);
+            });
+        }
+
+        // Handle form submission and save player's name
         document.querySelector('.registration-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const playerName = document.querySelector('.player-name').value;
-            localStorage.setItem('playerName', playerName);
-            window.location.href = 'quiz.html'; // Redirect to the quiz page
+            sessionStorage.setItem('playerName', playerName);
+
+            // Store player in the players list in sessionStorage
+            let players = JSON.parse(sessionStorage.getItem('players')) || [];
+            if (!players.includes(playerName)) {
+                players.push(playerName);
+                sessionStorage.setItem('players', JSON.stringify(players));
+            }
+
+            // Update the player list on the page
+            updatePlayerList();
+
+            // Check if the player is the admin (replace 'Adina' with the admin's username)
+            const isAdmin = (playerName === 'Adina');
+            sessionStorage.setItem('isAdmin', isAdmin);
+
+            if (isAdmin) {
+                // Show the "Start Quiz" button for admin
+                document.getElementById('startQuizButton').style.display = 'block';
+            } else {
+                // Show the waiting message for non-admin users
+                document.querySelector('.waiting-message').style.display = 'block';
+            }
+        });
+
+        // Handle Start Quiz button click (Admin only)
+        document.getElementById('startQuizButton').addEventListener('click', function() {
+            // Clear the players list when starting the quiz
+            sessionStorage.removeItem('players');
+
+            // Redirect to the quiz page
+            window.location.href = 'quiz.html';
+        });
+
+        // Update the player list on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePlayerList();
+
+            const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+            if (isAdmin) {
+                document.getElementById('startQuizButton').style.display = 'block';
+            } else {
+                document.querySelector('.waiting-message').style.display = 'block';
+            }
         });
     </script>
 </body>
 </html>
+
+
+
