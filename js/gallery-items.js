@@ -1,23 +1,23 @@
 export const galleryItems = [
     {
       
-      preview: '../pics/olympicsp1.jpg',
-      original: '../pics/olympicsl1.jpg',
+      preview: './pics/olympicsp1.jpg',
+      original: './pics/olympicsl1.jpg',
       description: 'Olympic 1 image',
     },
     {
       preview:
-        '../pics/olympic2p.jpg',
+        './pics/olympic2p.jpg',
       original:
-        '../pics/olympics2l.jpg',
-      description: 'Olympic 1 image',
+        './pics/olympics2l.jpg',
+      description: 'Olympic 2 image',
     },
     {
         preview:
-          '../pics/olympic3preview.jpg',
+          './pics/olympic3preview.jpg',
         original:
-          '../pics/olympic3large.jpg',
-        description: 'Olympic 1 image',
+          './pics/olympic3large.jpg',
+        description: 'Olympic 3 image',
       },
 
   ];
