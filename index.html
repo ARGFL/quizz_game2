@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Survival Quiz Game</title>
+    <link rel="stylesheet" href="./css/gallery.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    
+    <script src="
+https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css
+" rel="stylesheet">
+</head>
+<body>
+    <!-- <div class="image-section">
+        
+        <img src="./pics/olympics4.jpg" alt="Image 4">
+        <img src="./pics/olympic5.jpg" alt="Image 5">
+        <img src="./pics/olympic6.jpg" alt="Image 6">
+        <img src="./pics/olympic-lady-gaga.jpg" alt="Image 7">
+        <img src="./pics/olympic-celion-dion.jpg" alt="Image 8">
+    </div> -->
+    
+    <div class="container">
+        <header>
+            <h1>How much can you remember <br> about the Olympic Games?</h1>
+            
+        </header>
+        <main>
+            <div class="home">
+                <h2>Welcome to the Game!</h2>
+                <form class="registration-form">
+                    <input type="text" class="player-name" placeholder="Enter your name" required>
+                    <button type="submit">Join Game</button>
+                </form>
+            </div>
+            
+
+            <!-- Add gallery items to this list -->
+            <ul class="gallery"></ul>
+        
+            <script src="./js/gallery.js" type="module"></script>
+        </main>
+    </div>
+    
+    <script>
+        document.querySelector('.registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const playerName = document.querySelector('.player-name').value;
+            localStorage.setItem('playerName', playerName);
+            window.location.href = 'quiz.html'; // Redirect to the quiz page
+        });
+    </script>
+</body>
+</html>
